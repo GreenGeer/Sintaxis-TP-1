@@ -28,12 +28,17 @@ _Bool Hexa (char num, bool correcto) {
 void CargarArchivo () {
   FILE *archivoLectura;
   FILE *archivoEscritura;
+  char dir1[] = "C:\\Users\\Equipo\\Desktop\\Sintaxis-TP-1-codigo-sebi\\prueba.txt";//IMPORTANTE:poner la direccion del archivo a leer!!!
+  char dir2[] = "C:\\Users\\Equipo\\Desktop\\Sintaxis-TP-1-codigo-sebi\\pruebaEscritura.txt";//
+  int ContadorDecimal = 0;
+  int ContadorOctal = 0;
+  int ContadorHexa = 0;
   char caracter;
   int i = 0;                  //revisa que el numero es decimal, octal, hexa o ninguno de ellos
   bool correcto = true;       //revisa que el numero sea valido
   bool primeraSaltear = false;//se asegura que no revise si la X de hexadecimal es valida ni los espacios que separan los numeros
-  archivoLectura = fopen ("prueba.txt","r");
-  archivoEscritura = fopen ("pruebaEscritura.txt","a+t");
+  archivoLectura = fopen (dir1,"r");
+  archivoEscritura = fopen (dir2,"a+t");
 
   if (archivoLectura == NULL) {
     printf("\nError de apertura del archivo. \n\n");
@@ -47,7 +52,8 @@ void CargarArchivo () {
             if (correcto == true) {
               //archivoEscritura,"%s",
               printf("Hexa\n");
-            } else printf("No es valido Hexa\n");
+              ContadorHexa = ContadorHexa + 1; //contador de hexa
+            } else printf("No es valido\n");
             i = 0;
             correcto = true;
             primeraSaltear = false;
@@ -59,8 +65,10 @@ void CargarArchivo () {
         } else {
           i = 1;
           if (caracter == ' ') {
-            if (correcto == true) printf("Octal\n");
-            else printf("No es valido Octal\n");
+            if (correcto == true) {
+                printf("Octal\n");
+                ContadorOctal = ContadorOctal + 1;
+            }else printf("No es valido\n");
             i = 0;
             correcto = true;
           }
@@ -70,8 +78,10 @@ void CargarArchivo () {
       else if ((caracter >= '1' && caracter <= '9') || i == 3) {
         i = 3;
         if (caracter == ' ') {
-          if (correcto == true) printf("Decimal\n");
-          else printf("No es valido Decimal\n");
+          if (correcto == true) {
+                printf("Decimal\n");
+            ContadorDecimal = ContadorDecimal +1;//contarodr de decimales
+          }else printf("No es valido\n");
           i = 0;
           correcto = true;
         } else correcto = Decimal(caracter, correcto);
@@ -85,6 +95,7 @@ void CargarArchivo () {
       }
     }
   }
+  printf("\n\nSe detectaron:\n\n%i numero/s en decimal.\n%i numero/s en octal.\n%i numero/s en Hexadecimal.\n\n",ContadorDecimal,ContadorOctal,ContadorHexa);
   fclose(archivoLectura);
   fclose(archivoEscritura);
 }
